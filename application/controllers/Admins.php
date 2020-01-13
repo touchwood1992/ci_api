@@ -59,31 +59,55 @@ class Admins extends REST_Controller
     //Get admin user profile using jwt token
     function index_get()
     {        
-       //Read Token and get this user's data....
+       //Read Token from header and get this user's data....
 
        $validated_id = JwtEncodeDecode::validate_token();
-       echo "aasa";
+       
        if($validated_id === false)
        {
-           echo "Missing token";
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
        }
        else
        {
-           $uid = $validated_id;
-           //get details using this user id from database
+           $uid = $validated_id["uid"];
+           //get details using this user id from database now
+
        }
     }
 
     //Update admin user profile = update profile using jwt token
     function index_put()
     {
-       //Read Token and update this user's profile...
+       //Read Token from header and update this user's profile...
+       $validated_id = JwtEncodeDecode::validate_token();
+       
+       if($validated_id === false)
+       {
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
+       }
+       else
+       {
+           $uid = $validated_id["uid"];
+           //update details using this user id from database now...
+           
+       }
     }
 
     //Delete admin user profile. = delete user  using jwt token
     function index_delete()
     {
-        //Read Token and Delete this user's profile...
+        //Read Token from header and Delete this user's profile...
+        $validated_id = JwtEncodeDecode::validate_token();
+       
+       if($validated_id === false)
+       {
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
+       }
+       else
+       {
+           $uid = $validated_id["uid"];
+           //Delete user using above user id...
+       }
     }
 }
 ?>

@@ -39,7 +39,7 @@ class JwtEncodeDecode
     }
 
     static function validate_token()
-    {        
+    {
         $CI =& get_instance();
         
         //Get all Headers from incoming request...        
@@ -51,6 +51,7 @@ class JwtEncodeDecode
         if($token === "")
         {
             (new self)->throw_out("Token Missing",401);
+            return false;
         }
         else
         {
@@ -59,10 +60,12 @@ class JwtEncodeDecode
             if($decoded_value === false)
             {
                 (new self)->throw_out("Invalid Token",401);
+                return false;
             }
             else
             {
-                    //Append user id to request fro further process in controller...
+                    //Return decoded values for further process in controller...
+                    return $decoded_value;
             }
         }
         
@@ -70,11 +73,11 @@ class JwtEncodeDecode
     function throw_out($msg,$status)
     {
         $CI =& get_instance();
-        $CI->output->set_status_header($status);  
-        $CI->output->set_content_type('application/json', 'utf-8');    
-        $CI->output->set_output(json_encode(array("error" => true , "msg" => array($msg)), JSON_PRETTY_PRINT)); 
+        $CI->output->set_status_header($status);
+        $CI->output->set_content_type('application/json', 'utf-8');
+        $CI->output->set_output(json_encode(array("error" => true , "msg" => array($msg)), JSON_PRETTY_PRINT));
         $CI->output->_display();
-        exit;;
+        exit;
     }
 }
 ?>
