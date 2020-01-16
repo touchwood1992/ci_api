@@ -65,7 +65,7 @@ class JwtEncodeDecode
             else
             {
                     //Return decoded values for further process in controller...
-                    return $decoded_value;
+                    return (array)$decoded_value;
             }
         }
         

@@ -50,7 +50,7 @@ class Admins extends REST_Controller
                 //Generate JWT for this user....
                 $encoded = JwtEncodeDecode::jwt_encode(array("uid" => $insert_status , "timestamp"=>time()));
 
-                return $this->response(array("error" => false , "token" => $encoded ,"msg" => array("Valid Logins")));
+                return $this->response(array("error" => false , "token" => $encoded ,"msg" => array("Valid Logins")),REST_Controller::HTTP_OK);
             }
        }
 
@@ -65,12 +65,22 @@ class Admins extends REST_Controller
        
        if($validated_id === false)
        {
-            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")) , REST_Controller::HTTP_BAD_REQUEST);
        }
        else
-       {
+       {           
            $uid = $validated_id["uid"];
+
            //get details using this user id from database now
+            $get_admin =   $this->admin_model->get_admin($uid);
+
+            if($get_admin ===  false)
+            {
+                $this->response(array("error" => true, "msg" => array("Invalid request")) , REST_Controller::HTTP_BAD_REQUEST);
+            }
+            else{
+                $this->response(array("error" => false , "admin" => $get_admin) , REST_Controller::HTTP_OK);
+            }
 
        }
     }
@@ -83,7 +93,7 @@ class Admins extends REST_Controller
        
        if($validated_id === false)
        {
-            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")) , REST_Controller::HTTP_BAD_REQUEST);
        }
        else
        {
@@ -101,7 +111,7 @@ class Admins extends REST_Controller
        
        if($validated_id === false)
        {
-            return $this->response(array("error" => true , "msg" => array("Invalid token.")));
+            return $this->response(array("error" => true , "msg" => array("Invalid token.")),REST_Controller::HTTP_BAD_REQUEST);
        }
        else
        {

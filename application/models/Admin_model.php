@@ -28,7 +28,7 @@ class Admin_model extends CI_model
     {
         $this->db->select("aid");
 
-        $this->db->group_start();        
+        $this->db->group_start();
         $this->db->where("aemail" , $uname);        
         $this->db->or_where("aname" , $uname);
         $this->db->group_end();
@@ -52,13 +52,25 @@ class Admin_model extends CI_model
     //Get Profile
     function get_admin($id)
     {
+        $this->db->select("aid,aname,aemail,adate");
+        $this->db->where("aid" , $id );
+        $admin = $this->db->get("admins");
+
+        if($admin->num_rows() > 0)
+        {
+            $ar = $admin->row_array();
+            return $ar;
+        }
+        else {
+            return false;
+        }
         
     }
 
     //Update profile
     function update_admin($id , $fields)
     {
-
+        
     }
 
     //Delete profile    
