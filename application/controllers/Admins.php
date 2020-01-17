@@ -12,7 +12,7 @@ class Admins extends REST_Controller
     //Create admin user profile = signup
     function index_post()
     {
-             
+         
         //Stores values into variables from form post...
        $aname = $this->input->post("aname");
        $aemail = $this->input->post("aemail");
@@ -88,6 +88,13 @@ class Admins extends REST_Controller
     //Update admin user profile = update profile using jwt token
     function index_put()
     {
+        //Always use json data or form url encoded data for put method in php.
+        //If you want to upload images as well then pass images as base64 encoded form in json or for url encoded key so that in backend you can upload it using server methods....
+
+        //If you want to pass form data then use POST method instead of PUT method....
+
+
+
        //Read Token from header and update this user's profile...
        $validated_id = JwtEncodeDecode::validate_token();
        
@@ -96,10 +103,16 @@ class Admins extends REST_Controller
             return $this->response(array("error" => true , "msg" => array("Invalid token.")) , REST_Controller::HTTP_BAD_REQUEST);
        }
        else
-       {
+       {        
            $uid = $validated_id["uid"];
+
+           //Reading request values...
+
+
+           //Validating request values...
+
+
            //update details using this user id from database now...
-           
        }
     }
 
@@ -117,6 +130,16 @@ class Admins extends REST_Controller
        {
            $uid = $validated_id["uid"];
            //Delete user using above user id...
+
+           $delete_user = $this->admin_model->delete_admin($uid);
+           if($delete_user === false)
+           {
+               $this->response( array("error" => true , "msg" => array("Error while deleting account...")), REST_Controller::HTTP_BAD_REQUEST);
+           }
+           else
+           {
+            $this->response( array("error" => false , "msg" => array("Account deleted Successfully...")), REST_Controller::HTTP_OK);
+           }
        }
     }
 }

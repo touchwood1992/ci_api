@@ -70,13 +70,24 @@ class Admin_model extends CI_model
     //Update profile
     function update_admin($id , $fields)
     {
-        
+            
     }
 
     //Delete profile    
     function delete_admin($id)
     {
+        $deleted = $this->db->delete("admins" , array("aid" => $id));
         
+        if($deleted)
+        {
+            //Delete all records from users table as well.....
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
 }
 ?>
